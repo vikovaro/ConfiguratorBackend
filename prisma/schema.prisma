@@ -1,0 +1,77 @@
+generator client {
+  provider      = "prisma-client-js"
+  binaryTargets = ["linux-arm64-openssl-1.1.x", "windows", "darwin-arm64", "debian-openssl-1.1.x", "debian-openssl-3.0.x", "linux-arm64-openssl-3.0.x"]
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model cpu {
+  id           Int             @id @default(autoincrement())
+  manufacturer String
+  socket       String
+  name         String
+  wattage      Int
+  frequency    Float
+  price        Int
+  computers    configuration[]
+}
+
+model gpu {
+  id           Int             @id @default(autoincrement())
+  frequency    Float
+  manufacturer String
+  name         String
+  port         String
+  wattage      Int
+  price        Int
+  computers    configuration[]
+}
+
+model motherboard {
+  id              Int             @id @default(autoincrement())
+  manufacturer    String
+  name            String
+  cpuManufacturer String
+  socket          String
+  chipset         String
+  port            String
+  price           Int
+  computers       configuration[]
+}
+
+model psu {
+  id           Int             @id @default(autoincrement())
+  manufacturer String
+  name         String
+  wattage      Int
+  price        Int
+  computers    configuration[]
+}
+
+model ram {
+  id           Int             @id @default(autoincrement())
+  manufacturer String
+  name         String
+  capacity     Int
+  price        Int
+  computers    configuration[]
+}
+
+model configuration {
+  id            Int         @id @default(autoincrement())
+  cpuId         Int
+  gpuId         Int
+  motherboardId Int
+  psuId         Int
+  ramId         Int
+  price         Int
+  createdAt     DateTime    @default(now())
+  cpu           cpu         @relation(fields: [cpuId], references: [id])
+  gpu           gpu         @relation(fields: [gpuId], references: [id])
+  motherboard   motherboard @relation(fields: [motherboardId], references: [id])
+  psu           psu         @relation(fields: [psuId], references: [id])
+  ram           ram         @relation(fields: [ramId], references: [id])
+}
