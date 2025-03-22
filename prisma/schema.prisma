@@ -75,10 +75,10 @@ model configuration {
   psu           psu         @relation(fields: [psuId], references: [id])
   ram           ram         @relation(fields: [ramId], references: [id])
   orderId       Int?
-  order         order?      @relation(fields: [orderId], references: [id])
+  order         orders?     @relation(fields: [orderId], references: [id])
 }
 
-model order {
+model orders {
   id             Int             @id @default(autoincrement())
   orderNumber    String          @db.VarChar(5)
   orderDate      DateTime
