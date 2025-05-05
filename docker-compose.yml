@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+    db:
+        image: postgres:16
+        container_name: configurator_db
+        environment:
+            POSTGRES_USER: $DB_USER
+            POSTGRES_PASSWORD: $DB_PASSWORD
+            POSTGRES_DB: $DB_NAME
+        ports:
+            - '5433:5432'
+        volumes:
+            - postgres_data:/var/lib/postgresql/data
+        healthcheck:
+            test: ['CMD-SHELL', 'pg_isready -U postgres']
+            interval: 5s
+            timeout: 5s
+            retries: 5
+
+    redis:
+        image: redis:7-alpine
+        container_name: configurator_redis
+        environment:
+            REDIS_PASSWORD: $REDIS_PASSWORD
+        ports:
+            - '6379:6379'
+        volumes:
+            - redis_data:/data
+        command: redis-server --requirepass password
+        healthcheck:
+            test: ['CMD', 'redis-cli', '-a', 'password', 'ping']
+volumes:
+    postgres_data:
+    redis_data:
