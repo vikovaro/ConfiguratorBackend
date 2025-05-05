@@ -5,6 +5,8 @@ import { ConfiguratorRepository } from './configurator.repository';
 import { PrismaClient } from '@prisma/client';
 import { ExceptionsFilter } from './interceptor/exception-filter';
 import { APP_FILTER } from '@nestjs/core';
+import { RedisCacheModule } from './cache/redis.module';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
     controllers: [ConfiguratorController],
@@ -16,6 +18,12 @@ import { APP_FILTER } from '@nestjs/core';
             provide: APP_FILTER,
             useClass: ExceptionsFilter,
         },
+    ],
+    imports: [
+        RedisCacheModule,
+        ConfigModule.forRoot({
+            isGlobal: true,
+        }),
     ],
 })
 export class ConfiguratorModule {}

@@ -6,8 +6,8 @@ import { SeedService } from './seed.service';
 import { PrismaClient } from '@prisma/client';
 
 @Module({
-  imports: [CommandModule, CommandFactory],
-  controllers: [],
-  providers: [SeedCommand, SeedService, PrismaClient],
+    imports: [CommandModule, CommandFactory],
+    controllers: [],
+    providers: [SeedCommand, SeedService, PrismaClient],
 })
 export class SeedModule {}

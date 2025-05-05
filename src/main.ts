@@ -14,9 +14,7 @@ async function bootstrap() {
     SwaggerModule.setup('api', app, document);
 
     const methods = ['GET', 'POST', 'PUT', 'OPTIONS', 'DELETE', 'PATCH'];
-    const urls = [
-        'http://localhost:3002',
-    ];
+    const urls = ['http://localhost:3002'];
     app.enableCors({
         origin: urls,
         methods: methods,

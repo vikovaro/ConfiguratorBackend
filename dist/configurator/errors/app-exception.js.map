@@ -1,1 +1,0 @@
-{"version":3,"file":"app-exception.js","sourceRoot":"","sources":["../../../src/configurator/errors/app-exception.ts"],"names":[],"mappings":";;;AAAA,MAAa,YAAa,SAAQ,KAAK;IACnC,YAAY,OAAO;QACf,KAAK,CAAC,OAAO,CAAC,CAAC;QACf,IAAI,CAAC,IAAI,GAAG,cAAc,CAAC;IAC/B,CAAC;CACJ;AALD,oCAKC"}

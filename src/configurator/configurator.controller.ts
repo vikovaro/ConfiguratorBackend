@@ -56,6 +56,9 @@ export class ConfiguratorController {
         enableImplicitConversion: true,
     })
     async getAllConfigurations(@Body() getConfigurationsDto: GetConfigurationsDto) {
-        return await this.configuratorService.getAllConfigurations(getConfigurationsDto.limit, getConfigurationsDto.offset);
+        return await this.configuratorService.getAllConfigurations(
+            getConfigurationsDto.limit,
+            getConfigurationsDto.offset,
+        );
     }
 }

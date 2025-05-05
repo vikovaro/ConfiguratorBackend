@@ -3,7 +3,6 @@ import { ConfiguratorRepository } from './configurator.repository';
 import { CreateConfigurationDto } from './dto/create-configuration.dto';
 import { IConfigurationResponse } from './dto/configuration.dto';
 import { AppException } from './errors/app-exception';
-import OpenAI from "openai";
 import { IGetConfigurationResponse } from './dto/get-configurations.response';
 
 @Injectable()
@@ -40,10 +39,11 @@ export class ConfiguratorService {
             sortedGpus.length === 0 ||
             sortedRams.length === 0
         ) {
-            throw new Error('Один или несколько массивов пусты. Проверьте данные.');
+            throw new AppException(
+                'Не удалось подобрать конфигурацию в рамках указанного бюджета.',
+            );
         }
 
-        // Примерные соотношения стоимости компонентов
         const cpuBudget = userPrice * 0.3; // 30% на процессор
         const gpuBudget = userPrice * 0.4; // 40% на видеокарту
         const ramBudget = userPrice * 0.1; // 10% на оперативную память
@@ -171,7 +171,9 @@ export class ConfiguratorService {
             sortedGpus.length === 0 ||
             sortedRams.length === 0
         ) {
-            throw new Error('Один или несколько массивов пусты. Проверьте данные.');
+            throw new AppException(
+                'Не удалось подобрать конфигурацию в рамках указанного бюджета.',
+            );
         }
 
         let bestConfiguration: IConfigurationResponse | null = null;
