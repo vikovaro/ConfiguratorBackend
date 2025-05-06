@@ -1,9 +1,9 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
-import { ConfiguratorModule } from './configurator/configurator.module';
+import { GlobalModule } from './global.module';
 
 async function bootstrap() {
-    const app = await NestFactory.create(ConfiguratorModule);
+    const app = await NestFactory.create(GlobalModule);
 
     const config = new DocumentBuilder()
         .setTitle('PC Assembler API')
