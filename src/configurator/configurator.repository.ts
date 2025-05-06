@@ -1,4 +1,4 @@
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { IConfigurationResponse } from './dto/configuration.dto';
 import { ICpuResponse } from './dto/cpu.dto';
@@ -6,15 +6,12 @@ import { IGpuResponse } from './dto/gpu.dto';
 import { IMotherBoardResponse } from './dto/motherboard.dto';
 import { IPsuResponse } from './dto/psu.dto';
 import { IRamResponse } from './dto/ram.dto';
-import { CACHE_MANAGER } from '@nestjs/cache-manager';
-import type { Cache } from 'cache-manager';
 import { IGetConfigurationResponse } from './dto/get-configurations.response';
 
 @Injectable()
 export class ConfiguratorRepository {
     constructor(
         private readonly prisma: PrismaClient,
-        @Inject(CACHE_MANAGER) private cacheManager: Cache,
     ) {}
 
     async getConfiguration(id: number): Promise<IConfigurationResponse> {

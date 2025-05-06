@@ -8,10 +8,8 @@ Backend приложение для автоматической конфигу�
 - **bun**
 - **Node.js**
 - **Nest.js**
-- **docker**
 - **PostgreSQL**
 - **Prisma ORM**
-- **redis**
 - **swagger**
 - **prettier/eslint**
 
@@ -19,16 +17,7 @@ Backend приложение для автоматической конфигу�
 
 ### Содержимое env файла
 
-> DATABASE_URL=""  
-> DB_USER=""  
-> DB_PASSWORD=""  
-> DB_NAME=""  
-> DB_HOST=""
->
-> REDIS_HOST=""  
-> REDIS_PORT=""  
-> REDIS_PASSWORD=""  
-> REDIS_DB=""
+> DATABASE_URL=""
 
 ### Установка зависимостей
 
