@@ -23,7 +23,7 @@ import { ConfigService } from '@nestjs/config';
                         new Keyv({
                             store: new CacheableMemory({
                                 ttl: 60000,
-                                lruSize: 5000
+                                lruSize: 5000,
                             }),
                         }),
                         createKeyv(redisUrl),

@@ -2,11 +2,16 @@ import { Module, Global } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PrismaClient } from '@prisma/client';
 import { APP_FILTER } from '@nestjs/core';
-import { RedisCacheModule } from './configurator/cache/redis.module';
-import { ConfiguratorModule } from './configurator/configurator.module';
-import { ExceptionsFilter } from './configurator/interceptor/exception-filter';
-import { PrismaExceptionFilter } from './configurator/exception-filters/prisma.exception.filter';
-import { PrismaModule } from './configurator/prisma/prisma.module';
+import { RedisCacheModule } from './cache/redis.module';
+import { ExceptionsFilter } from './exception-filters/exception-filter';
+import { PrismaExceptionFilter } from './exception-filters/prisma.exception.filter';
+import { PrismaModule } from './prisma/prisma.module';
+import { JwtModule } from '@nestjs/jwt';
+import { AuthRestGuard } from './guards/auth-rest.guard';
+import { AuthRefreshRestGuard } from './guards/auth-refresh.guad';
+import { ConfiguratorModule } from './features/configurator/configurator.module';
+import { UserModule } from './features/user/user.module';
+import { UserRepository } from './features/user/repositories/user.repository';
 
 @Global()
 @Module({
@@ -16,9 +21,25 @@ import { PrismaModule } from './configurator/prisma/prisma.module';
         }),
         RedisCacheModule,
         ConfiguratorModule,
+        UserModule,
         PrismaModule,
+        JwtModule.registerAsync({
+            imports: [ConfigModule],
+            inject: [ConfigService],
+            useFactory: async (configService: ConfigService) => ({
+                secret: configService.get<string>('JWT_SECRET'),
+                signOptions: {
+                    expiresIn: '30m',
+                },
+                global: true,
+            }),
+        }),
+        UserModule,
     ],
     providers: [
+        UserRepository,
+        AuthRestGuard,
+        AuthRefreshRestGuard,
         ConfigService,
         PrismaClient,
         {
@@ -30,10 +51,6 @@ import { PrismaModule } from './configurator/prisma/prisma.module';
             useClass: PrismaExceptionFilter,
         },
     ],
-    exports: [
-        ConfigService,
-        PrismaClient,
-        RedisCacheModule,
-    ],
+    exports: [ConfigService, PrismaClient, RedisCacheModule],
 })
 export class GlobalModule {}

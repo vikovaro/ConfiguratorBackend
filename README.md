@@ -11,7 +11,9 @@ Backend приложение для автоматической конфигу�
 - **docker**
 - **PostgreSQL**
 - **Prisma ORM**
-- **redis**
+- **Redis**
+- **JWT**
+
 - **swagger**
 - **prettier/eslint**
 
@@ -19,16 +21,20 @@ Backend приложение для автоматической конфигу�
 
 ### Содержимое env файла
 
-> DATABASE_URL=""  
-> DB_USER=""  
-> DB_PASSWORD=""  
-> DB_NAME=""  
-> DB_HOST=""
->
-> REDIS_HOST=""  
-> REDIS_PORT=""  
-> REDIS_PASSWORD=""  
-> REDIS_DB=""
+```
+DATABASE_URL=""
+DB_USER=""
+DB_PASSWORD=""
+DB_NAME=""
+DB_HOST=""
+
+REDIS_HOST=""  
+REDIS_PORT=""  
+REDIS_PASSWORD=""  
+REDIS_DB=""
+
+JWT_SECRET=
+```
 
 ### Установка зависимостей
 

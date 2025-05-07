@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { ConfiguratorRepository } from './configurator.repository';
-import { CreateConfigurationDto } from './dto/create-configuration.dto';
-import { IConfigurationResponse } from './dto/configuration.dto';
-import { AppException } from './errors/app-exception';
-import { IGetConfigurationResponse } from './dto/get-configurations.response';
+import { ConfiguratorRepository } from '../repositories/configurator.repository';
+import { CreateConfigurationDto } from '../dto/create-configuration.dto';
+import { IConfigurationResponse } from '../dto/configuration.dto';
+import { IGetConfigurationResponse } from '../dto/get-configurations.response';
+import { AppException } from '../../../errors/app-exception';
 
 @Injectable()
 export class ConfiguratorService {
@@ -60,12 +60,12 @@ export class ConfiguratorService {
         motherboards.sort((a, b) => b.price - a.price);
         psus.sort((a, b) => b.price - a.price);
 
-        const resultText = `
-      CPUs: ${JSON.stringify(sortedCpus)} \n
-      GPUs: ${JSON.stringify(sortedGpus)} \n
-      RAMs: ${JSON.stringify(sortedRams)} \n
-      Motherboards: ${JSON.stringify(motherboards)} \n
-      PSUs: ${JSON.stringify(psus)}`;
+        //   const resultText = `
+        // CPUs: ${JSON.stringify(sortedCpus)} \n
+        // GPUs: ${JSON.stringify(sortedGpus)} \n
+        // RAMs: ${JSON.stringify(sortedRams)} \n
+        // Motherboards: ${JSON.stringify(motherboards)} \n
+        // PSUs: ${JSON.stringify(psus)}`;
 
         // console.log(`test ${resultText}`);
 

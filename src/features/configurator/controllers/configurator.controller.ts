@@ -1,10 +1,10 @@
 import { Controller, Post, Body, SerializeOptions, HttpStatus, Get, Query } from '@nestjs/common';
-import { ConfiguratorService } from './configurator.service';
+import { ConfiguratorService } from '../services/configurator.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ConfigurationResponse } from './dto/configuration.dto';
-import { CreateConfigurationDto } from './dto/create-configuration.dto';
-import { GetConfigurationsDto } from './dto/get-configurations.dto';
-import { GetConfigurationsResponse } from './dto/get-configurations.response';
+import { ConfigurationResponse } from '../dto/configuration.dto';
+import { CreateConfigurationDto } from '../dto/create-configuration.dto';
+import { GetConfigurationsDto } from '../dto/get-configurations.dto';
+import { GetConfigurationsResponse } from '../dto/get-configurations.response';
 
 @Controller('configurator')
 @ApiTags('configurator')

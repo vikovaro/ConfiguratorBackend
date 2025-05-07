@@ -25,10 +25,42 @@ async function main() {
 
     await prisma.configuration.createMany({
         data: [
-            { id: 1, cpuId: 1, gpuId: 1, motherboardId: 1, psuId: 1, ramId: 1, price: 18000 + 35000 + 12000 + 7000 + 9000 },
-            { id: 2, cpuId: 2, gpuId: 2, motherboardId: 4, psuId: 2, ramId: 1, price: 32000 + 45000 + 22000 + 12000 + 9000 },
-            { id: 3, cpuId: 3, gpuId: 3, motherboardId: 2, psuId: 3, ramId: 2, price: 25000 + 30000 + 18000 + 15000 + 6000 },
-            { id: 4, cpuId: 5, gpuId: 5, motherboardId: 5, psuId: 4, ramId: 3, price: 8000 + 40000 + 10000 + 5000 + 3000 },
+            {
+                id: 1,
+                cpuId: 1,
+                gpuId: 1,
+                motherboardId: 1,
+                psuId: 1,
+                ramId: 1,
+                price: 18000 + 35000 + 12000 + 7000 + 9000,
+            },
+            {
+                id: 2,
+                cpuId: 2,
+                gpuId: 2,
+                motherboardId: 4,
+                psuId: 2,
+                ramId: 1,
+                price: 32000 + 45000 + 22000 + 12000 + 9000,
+            },
+            {
+                id: 3,
+                cpuId: 3,
+                gpuId: 3,
+                motherboardId: 2,
+                psuId: 3,
+                ramId: 2,
+                price: 25000 + 30000 + 18000 + 15000 + 6000,
+            },
+            {
+                id: 4,
+                cpuId: 5,
+                gpuId: 5,
+                motherboardId: 5,
+                psuId: 4,
+                ramId: 3,
+                price: 8000 + 40000 + 10000 + 5000 + 3000,
+            },
         ],
     });
 
