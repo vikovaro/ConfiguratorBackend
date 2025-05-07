@@ -1,17 +1,23 @@
 import { PrismaClient, Status } from '@prisma/client';
 import { Role } from '@prisma/client';
+import { hash } from 'bcrypt';
 
 const prisma = new PrismaClient();
+const SALT_ROUNDS = 10;
 
 async function main() {
     await prisma.user.createMany({
         data: [
             {
                 id: '550e8400-e29b-41d4-a716-446655440000',
+                login: 'admin',
+                password: await hash('admin123', SALT_ROUNDS),
                 role: Role.Admin,
             },
             {
                 id: '550e8400-e29b-41d4-a716-446655440001',
+                login: 'user',
+                password: await hash('user123', SALT_ROUNDS),
                 role: Role.User,
             },
         ],
