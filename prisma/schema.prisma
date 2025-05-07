@@ -94,6 +94,8 @@ model Order {
 
 model User {
   id        String    @id @unique @default(uuid()) @db.Uuid
+  login     String    @unique
+  password  String
   createdAt DateTime  @default(now())
   role      Role
   updatedAt DateTime  @updatedAt
@@ -107,8 +109,8 @@ model Session {
   refreshToken String   @unique
   createdAt    DateTime @default(now())
   updatedAt    DateTime @updatedAt
-  user         User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId       String?  @db.Uuid
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String   @unique @db.Uuid
 }
 
 enum Role {
