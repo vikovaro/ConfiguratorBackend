@@ -10,13 +10,13 @@ async function main() {
         data: [
             {
                 id: '550e8400-e29b-41d4-a716-446655440000',
-                login: 'admin',
+                username: 'admin',
                 password: await hash('admin123', SALT_ROUNDS),
                 role: Role.Admin,
             },
             {
                 id: '550e8400-e29b-41d4-a716-446655440001',
-                login: 'user',
+                username: 'user',
                 password: await hash('user123', SALT_ROUNDS),
                 role: Role.User,
             },
