@@ -1,19 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
+import { IUserResponse } from '../dto/user.response';
 
 @Injectable()
 export class UserRepository {
     constructor(private readonly prisma: PrismaClient) {}
 
-    async getUserById(id: string) {
+    async getUserById(id: string): Promise<IUserResponse> {
         return this.prisma.user.findUnique({
             where: { id: id },
         });
     }
 
-    async getUserByLogin(login: string) {
+    async getUserByUsername(username: string): Promise<IUserResponse> {
         return this.prisma.user.findUnique({
-            where: { login: login },
+            where: { username: username },
         });
     }
 

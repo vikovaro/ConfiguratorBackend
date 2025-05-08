@@ -19,8 +19,25 @@ export class UserService {
         return user;
     }
 
-    async signIn(login: string, password: string) {
-        const user = await this.userRepository.getUserByLogin(login);
+    async signUp(username: string, password: string) {
+        const user = await this.userRepository.getUserByUsername(username);
+
+        if (!user) {
+            throw new NotFoundException('User not found');
+        }
+
+        const tokens = await this.tokenService.generateToken(user.id, password);
+
+        await this.userRepository.updateSession(user.id, tokens.accessToken, tokens.refreshToken);
+
+        return {
+            accessToken: tokens.accessToken,
+            refreshToken: tokens.refreshToken,
+        };
+    }
+
+    async signIn(username: string, password: string) {
+        const user = await this.userRepository.getUserByUsername(username);
 
         if (!user) {
             throw new NotFoundException('User not found');
