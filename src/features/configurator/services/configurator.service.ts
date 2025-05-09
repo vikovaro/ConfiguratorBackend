@@ -1,8 +1,8 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConfiguratorRepository } from '../repositories/configurator.repository';
-import { CreateConfigurationDto } from '../dto/create-configuration.dto';
-import { IConfigurationResponse } from '../dto/configuration.dto';
-import { IGetConfigurationResponse } from '../dto/get-configurations.response';
+import { CreateConfigurationRequest } from '../domain/dto/create-configuration.request';
+import { IConfigurationResponse } from '../domain/dto/configuration.response';
+import { IGetConfigurationResponse } from '../domain/dto/get-configurations.response';
 import { AppException } from '../../../errors/app-exception';
 
 @Injectable()
@@ -10,7 +10,7 @@ export class ConfiguratorService {
     constructor(private readonly configurationRepository: ConfiguratorRepository) {}
 
     async createConfiguration(
-        createConfigurationDto: CreateConfigurationDto,
+        createConfigurationDto: CreateConfigurationRequest,
     ): Promise<IConfigurationResponse> {
         const userPrice = createConfigurationDto.price;
 
@@ -141,7 +141,7 @@ export class ConfiguratorService {
     }
 
     async createConfigurationOld1(
-        createConfigurationDto: CreateConfigurationDto,
+        createConfigurationDto: CreateConfigurationRequest,
     ): Promise<IConfigurationResponse> {
         const userPrice = createConfigurationDto.price;
         const maxPrice = userPrice + 3000;

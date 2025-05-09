@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsInt, Min } from 'class-validator';
 
-export class GetConfigurationsDto {
+export class GetConfigurationsRequest {
     @ApiProperty({ example: 10, description: 'limit' })
     @IsInt()
     @Min(1)

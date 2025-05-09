@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
-import { ERole, TRole } from '../domain/role.enum';
+import { ERole, TRole } from '../models/role.enum';
 
 export class UserResponse implements IUserResponse {
     @ApiProperty({ example: '4da06a83-abf8-4f00-9423-fc06acd0f21d' })

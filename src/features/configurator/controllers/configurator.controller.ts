@@ -1,10 +1,10 @@
 import { Controller, Post, Body, SerializeOptions, HttpStatus, Get, Query } from '@nestjs/common';
 import { ConfiguratorService } from '../services/configurator.service';
 import { ApiResponse, ApiTags } from '@nestjs/swagger';
-import { ConfigurationResponse } from '../dto/configuration.dto';
-import { CreateConfigurationDto } from '../dto/create-configuration.dto';
-import { GetConfigurationsDto } from '../dto/get-configurations.dto';
-import { GetConfigurationsResponse } from '../dto/get-configurations.response';
+import { ConfigurationResponse } from '../domain/dto/configuration.response';
+import { CreateConfigurationRequest } from '../domain/dto/create-configuration.request';
+import { GetConfigurationsRequest } from '../domain/dto/get-configurations.request';
+import { GetConfigurationsResponse } from '../domain/dto/get-configurations.response';
 
 @Controller('configurator')
 @ApiTags('configurator')
@@ -23,7 +23,7 @@ export class ConfiguratorController {
         excludeExtraneousValues: true,
         enableImplicitConversion: true,
     })
-    async createConfiguration(@Body() createConfigurationDto: CreateConfigurationDto) {
+    async createConfiguration(@Body() createConfigurationDto: CreateConfigurationRequest) {
         return await this.configuratorService.createConfiguration(createConfigurationDto);
     }
 
@@ -55,7 +55,7 @@ export class ConfiguratorController {
         excludeExtraneousValues: true,
         enableImplicitConversion: true,
     })
-    async getAllConfigurations(@Body() getConfigurationsDto: GetConfigurationsDto) {
+    async getAllConfigurations(@Body() getConfigurationsDto: GetConfigurationsRequest) {
         return await this.configuratorService.getAllConfigurations(
             getConfigurationsDto.limit,
             getConfigurationsDto.offset,

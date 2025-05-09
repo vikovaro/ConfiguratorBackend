@@ -1,10 +1,10 @@
 import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
 import { Exclude, Expose } from 'class-transformer';
-import { CpuResponse, ICpuResponse } from './cpu.dto';
-import { GpuResponse, IGpuResponse } from './gpu.dto';
-import { IMotherBoardResponse, MotherBoardResponse } from './motherboard.dto';
-import { IPsuResponse, PsuResponse } from './psu.dto';
-import { IRamResponse, RamResponse } from './ram.dto';
+import { CpuResponse, ICpuResponse } from './cpu.response';
+import { GpuResponse, IGpuResponse } from './gpu.response';
+import { IMotherBoardResponse, MotherBoardResponse } from './motherboard.response';
+import { IPsuResponse, PsuResponse } from './psu.response';
+import { IRamResponse, RamResponse } from './ram.response';
 
 export class ConfigurationResponse implements IConfigurationResponse {
     @ApiProperty({ example: 1 })
