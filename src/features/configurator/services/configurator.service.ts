@@ -3,7 +3,7 @@ import { ConfiguratorRepository } from '../repositories/configurator.repository'
 import { CreateConfigurationRequest } from '../domain/dto/create-configuration.request';
 import { IConfigurationResponse } from '../domain/dto/configuration.response';
 import { IGetConfigurationResponse } from '../domain/dto/get-configurations.response';
-import { AppException } from '../../../errors/app-exception';
+import { ConfiguratorException } from '../../../errors/configurator-exception';
 
 @Injectable()
 export class ConfiguratorService {
@@ -39,7 +39,7 @@ export class ConfiguratorService {
             sortedGpus.length === 0 ||
             sortedRams.length === 0
         ) {
-            throw new AppException(
+            throw new ConfiguratorException(
                 'Не удалось подобрать конфигурацию в рамках указанного бюджета.',
             );
         }
@@ -115,7 +115,7 @@ export class ConfiguratorService {
         }
 
         if (!bestConfiguration) {
-            throw new AppException(
+            throw new ConfiguratorException(
                 'Не удалось подобрать конфигурацию в рамках указанного бюджета.',
             );
         }
@@ -171,7 +171,7 @@ export class ConfiguratorService {
             sortedGpus.length === 0 ||
             sortedRams.length === 0
         ) {
-            throw new AppException(
+            throw new ConfiguratorException(
                 'Не удалось подобрать конфигурацию в рамках указанного бюджета.',
             );
         }
@@ -224,7 +224,7 @@ export class ConfiguratorService {
         }
 
         if (!bestConfiguration) {
-            throw new AppException(
+            throw new ConfiguratorException(
                 'Не удалось подобрать конфигурацию в рамках указанного бюджета.',
             );
         }

@@ -1,32 +1,48 @@
-import { Injectable, NotFoundException, UnauthorizedException } from '@nestjs/common';
+import {
+    BadRequestException,
+    Injectable,
+    NotFoundException,
+    UnauthorizedException,
+} from '@nestjs/common';
 import { UserRepository } from '../repositories/user.repository';
 import { TokenService } from './token.service';
+import { TokensResponse } from '../domain/dto/tokens.response';
+import { IUserResponse } from '../domain/dto/user.response';
+import { SignUpRequest } from '../domain/dto/sign-up.request';
+import { Role } from '@prisma/client';
+import { UpdateUserRequest } from '../domain/dto/update.request';
+import * as bcrypt from 'bcryptjs';
 
 @Injectable()
 export class UserService {
+    private readonly SALT_ROUNDS = 10;
+
     constructor(
         private readonly userRepository: UserRepository,
         private readonly tokenService: TokenService,
     ) {}
 
-    async getUserById(id: string) {
+    async getUserById(id: string): Promise<IUserResponse> {
         const user = await this.userRepository.getUserById(id);
 
         if (!user) {
-            throw new NotFoundException('User not found');
+            throw new NotFoundException('user-not-found');
         }
 
         return user;
     }
 
-    async signUp(username: string, password: string) {
-        const user = await this.userRepository.getUserByUsername(username);
-
-        if (!user) {
-            throw new NotFoundException('User not found');
+    async signUp(signUpDto: SignUpRequest): Promise<TokensResponse> {
+        const existingUser = await this.userRepository.getUserByUsername(signUpDto.username);
+        if (existingUser) {
+            throw new UnauthorizedException('username-already-taken');
         }
 
-        const tokens = await this.tokenService.generateToken(user.id, password);
+        const hashedPassword = await bcrypt.hash(signUpDto.password, this.SALT_ROUNDS);
+
+        const user = await this.userRepository.createUser(signUpDto, hashedPassword);
+
+        const tokens = await this.tokenService.generateToken(user.id, Role.User);
 
         await this.userRepository.updateSession(user.id, tokens.accessToken, tokens.refreshToken);
 
@@ -36,14 +52,19 @@ export class UserService {
         };
     }
 
-    async signIn(username: string, password: string) {
+    async signIn(username: string, password: string): Promise<TokensResponse> {
         const user = await this.userRepository.getUserByUsername(username);
 
         if (!user) {
-            throw new NotFoundException('User not found');
+            throw new NotFoundException('user-not-found');
         }
 
-        const tokens = await this.tokenService.generateToken(user.id, password);
+        const isPasswordValid = await bcrypt.compare(password, user.password);
+        if (!isPasswordValid) {
+            throw new UnauthorizedException('invalid-password');
+        }
+
+        const tokens = await this.tokenService.generateToken(user.id, user.role);
 
         await this.userRepository.updateSession(user.id, tokens.accessToken, tokens.refreshToken);
 
@@ -53,7 +74,7 @@ export class UserService {
         };
     }
 
-    async refreshToken(refreshToken: string) {
+    async refreshToken(refreshToken: string): Promise<TokensResponse> {
         const session = await this.userRepository.getSessionByRefreshToken(refreshToken);
         if (!session) {
             throw new UnauthorizedException();
@@ -69,5 +90,27 @@ export class UserService {
             accessToken: tokens.accessToken,
             refreshToken: tokens.refreshToken,
         };
+    }
+
+    async update(updateRequest: UpdateUserRequest, userId: string): Promise<IUserResponse> {
+        const existingUser = await this.userRepository.getUserById(userId);
+        if (!existingUser) {
+            throw new NotFoundException('user-not-found');
+        }
+
+        if (updateRequest.password) {
+            updateRequest.password = await bcrypt.hash(updateRequest.password, this.SALT_ROUNDS);
+        }
+
+        if (updateRequest.username && updateRequest.username !== existingUser.username) {
+            const userWithSameUsername = await this.userRepository.getUserByUsername(
+                updateRequest.username,
+            );
+            if (userWithSameUsername) {
+                throw new BadRequestException('username-already-taken');
+            }
+        }
+
+        return await this.userRepository.updateUser(updateRequest, userId);
     }
 }

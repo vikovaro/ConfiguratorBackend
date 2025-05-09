@@ -1,7 +1,7 @@
-import { Module, Global } from '@nestjs/common';
+import { Module, Global, ClassSerializerInterceptor } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PrismaClient } from '@prisma/client';
-import { APP_FILTER } from '@nestjs/core';
+import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
 import { RedisCacheModule } from './cache/redis.module';
 import { ExceptionsFilter } from './exception-filters/exception-filter';
 import { PrismaExceptionFilter } from './exception-filters/prisma.exception.filter';
@@ -49,6 +49,10 @@ import { UserRepository } from './features/user/repositories/user.repository';
         {
             provide: APP_FILTER,
             useClass: PrismaExceptionFilter,
+        },
+        {
+            provide: APP_INTERCEPTOR,
+            useClass: ClassSerializerInterceptor,
         },
     ],
     exports: [ConfigService, PrismaClient, RedisCacheModule],

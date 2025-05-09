@@ -11,7 +11,6 @@ export class UserResponse implements IUserResponse {
     @Expose()
     username: string;
 
-    @ApiProperty()
     @Exclude()
     password: string;
 

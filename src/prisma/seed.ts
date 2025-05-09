@@ -202,6 +202,7 @@ async function main() {
 async function cleanDatabase() {
     await prisma.order.deleteMany();
     await prisma.configuration.deleteMany();
+    await prisma.user.deleteMany();
     await prisma.session.deleteMany();
     await prisma.user.deleteMany();
     await prisma.cpu.deleteMany();

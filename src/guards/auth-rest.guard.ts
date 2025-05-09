@@ -25,7 +25,7 @@ export class AuthRestGuard implements CanActivate {
         try {
             data = await this.jwtService.verifyAsync(token);
         } catch {
-            throw new UnauthorizedException('jwt expired');
+            throw new UnauthorizedException('jwt-expired');
         }
 
         request['data'] = data;

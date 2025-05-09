@@ -10,7 +10,7 @@ import {
     UnauthorizedException,
     NotFoundException,
 } from '@nestjs/common';
-import { AppException } from '../errors/app-exception';
+import { ConfiguratorException } from '../errors/configurator-exception';
 
 @Injectable()
 @Catch()
@@ -25,7 +25,7 @@ export class ExceptionsFilter implements ExceptionFilter {
     catch(exception: any, host: ArgumentsHost) {
         const ctx = host.switchToHttp();
         const response = ctx.getResponse();
-        if (exception instanceof AppException) {
+        if (exception instanceof ConfiguratorException) {
             response.status(HttpStatus.BAD_REQUEST).json({
                 statusCode: HttpStatus.BAD_REQUEST,
                 message: exception.message,

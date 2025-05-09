@@ -17,6 +17,7 @@ import { AuthRefreshRestGuard } from '../../../guards/auth-refresh.guad';
 import { UserResponse } from '../domain/dto/user.response';
 import { SignInRequest } from '../domain/dto/sign-in.request';
 import { SignUpRequest } from '../domain/dto/sign-up.request';
+import { UpdateUserRequest } from '../domain/dto/update.request';
 
 @Controller('user')
 @ApiTags('user')
@@ -44,10 +45,8 @@ export class UserController {
         excludeExtraneousValues: true,
         enableImplicitConversion: true,
     })
-    async signUp(@Body() signInDto: SignUpRequest) {
-        console.log(`test register signUpDto:${JSON.stringify(signInDto)}`);
-        const tokens = await this.userService.signUp(signInDto.username, signInDto.password);
-        return tokens;
+    async signUp(@Body() signUpDto: SignUpRequest) {
+        return await this.userService.signUp(signUpDto);
     }
 
     @Post('/login')
@@ -59,9 +58,7 @@ export class UserController {
         enableImplicitConversion: true,
     })
     async signIn(@Body() signInDto: SignInRequest) {
-        console.log(`test login signInDto:${JSON.stringify(signInDto)}`);
-        const tokens = await this.userService.signIn(signInDto.username, signInDto.password);
-        return tokens;
+        return await this.userService.signIn(signInDto.username, signInDto.password);
     }
 
     @Post('/refresh')
@@ -78,6 +75,19 @@ export class UserController {
         enableImplicitConversion: true,
     })
     async refreshToken(@Req() req: Request) {
-        return await this.userService.refreshToken(req['data']);
+        return await this.userService.refreshToken(req['data'].token);
+    }
+
+    @Post('/update')
+    @UseGuards(AuthRestGuard)
+    @ApiResponse({ status: HttpStatus.OK, description: 'update user', type: UserResponse })
+    @SerializeOptions({
+        strategy: 'exposeAll',
+        type: UserResponse,
+        excludeExtraneousValues: true,
+        enableImplicitConversion: true,
+    })
+    async update(@Req() req: Request, @Body() updateRequest: UpdateUserRequest) {
+        return await this.userService.update(updateRequest, req['data'].userId);
     }
 }
