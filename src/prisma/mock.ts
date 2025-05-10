@@ -74,9 +74,8 @@ async function main() {
         data: [
             {
                 orderDate: new Date('2023-01-15'),
-                deliveryDate: new Date('2023-01-20'),
-                carNumber: 'А123БВ777',
                 configurationId: 1,
+                address: 'Revolution Square, Building 1',
                 userId: '550e8400-e29b-41d4-a716-446655440000',
                 status: Status.Pending,
             },
@@ -84,14 +83,15 @@ async function main() {
                 orderDate: new Date('2023-02-10'),
                 deliveryDate: new Date('2023-02-15'),
                 configurationId: 2,
+                address: '8 Bolshoy Devyatinsky Lane',
                 userId: '550e8400-e29b-41d4-a716-446655440001',
-                status: Status.Accepted,
+                status: Status.Completed,
             },
             {
                 orderDate: new Date('2023-03-05'),
-                carNumber: 'В456ГД123',
                 configurationId: 3,
                 userId: '550e8400-e29b-41d4-a716-446655440000',
+                address: '121099',
                 status: Status.Canceled,
             },
         ],

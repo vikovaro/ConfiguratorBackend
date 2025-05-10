@@ -79,9 +79,9 @@ model Configuration {
 
 model Order {
   id              Int           @id @default(autoincrement())
-  orderDate       DateTime
+  orderDate       DateTime      @default(now())
   deliveryDate    DateTime?
-  carNumber       String?
+  address         String
   configuration   Configuration @relation(fields: [configurationId], references: [id])
   configurationId Int
   user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
