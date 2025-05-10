@@ -1,7 +1,7 @@
 import { Module, Global, ClassSerializerInterceptor } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PrismaClient } from '@prisma/client';
-import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
+import { APP_FILTER, APP_INTERCEPTOR, APP_GUARD } from '@nestjs/core';
 import { RedisCacheModule } from './cache/redis.module';
 import { ExceptionsFilter } from './exception-filters/exception-filter';
 import { PrismaExceptionFilter } from './exception-filters/prisma.exception.filter';
@@ -12,6 +12,8 @@ import { AuthRefreshRestGuard } from './guards/auth-refresh.guad';
 import { ConfiguratorModule } from './features/configurator/configurator.module';
 import { UserModule } from './features/user/user.module';
 import { UserRepository } from './features/user/repositories/user.repository';
+import { OrderModule } from './features/order/order.module';
+import { RolesGuard } from './guards/roles.guard';
 
 @Global()
 @Module({
@@ -20,8 +22,6 @@ import { UserRepository } from './features/user/repositories/user.repository';
             isGlobal: true,
         }),
         RedisCacheModule,
-        ConfiguratorModule,
-        UserModule,
         PrismaModule,
         JwtModule.registerAsync({
             imports: [ConfigModule],
@@ -34,6 +34,8 @@ import { UserRepository } from './features/user/repositories/user.repository';
                 global: true,
             }),
         }),
+        ConfiguratorModule,
+        OrderModule,
         UserModule,
     ],
     providers: [
@@ -53,6 +55,10 @@ import { UserRepository } from './features/user/repositories/user.repository';
         {
             provide: APP_INTERCEPTOR,
             useClass: ClassSerializerInterceptor,
+        },
+        {
+            provide: APP_GUARD,
+            useClass: RolesGuard,
         },
     ],
     exports: [ConfigService, PrismaClient, RedisCacheModule],
