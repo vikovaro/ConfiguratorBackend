@@ -9,15 +9,33 @@ import { SignUpRequest } from '../domain/dto/sign-up.request';
 export class UserRepository {
     constructor(private readonly prisma: PrismaClient) {}
 
+    BASE_USER_SELECT = {
+        id: true,
+        email: true,
+        username: true,
+        role: true,
+        name: true,
+        phone: true,
+        createdAt: true,
+    };
+
     async getUserById(id: string): Promise<IUserResponse> {
         return this.prisma.user.findUnique({
             where: { id: id },
+            select: this.BASE_USER_SELECT,
         });
     }
 
     async getUserByUsername(username: string): Promise<IUserResponse> {
         return this.prisma.user.findUnique({
             where: { username: username },
+            select: this.BASE_USER_SELECT,
+        });
+    }
+
+    async getUserWithPassword(id: string) {
+        return this.prisma.user.findUnique({
+            where: { id: id },
         });
     }
 
@@ -31,6 +49,7 @@ export class UserRepository {
                 password: password,
                 role: Role.User,
             },
+            select: this.BASE_USER_SELECT,
         });
     }
 
@@ -76,6 +95,7 @@ export class UserRepository {
                 email: updateData.email ? updateData.email : undefined,
                 password: updateData.password ? updateData.password : undefined,
             },
+            select: this.BASE_USER_SELECT,
         });
     }
 }

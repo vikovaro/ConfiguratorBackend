@@ -11,6 +11,18 @@ export class UserResponse implements IUserResponse {
     @Expose()
     username: string;
 
+    @ApiProperty({ example: 'name' })
+    @Expose()
+    name: string;
+
+    @ApiProperty({ example: '+71112223344' })
+    @Expose()
+    phone: string;
+
+    @ApiProperty({ example: 'example@gmail.com' })
+    @Expose()
+    email: string;
+
     @Exclude()
     password: string;
 
@@ -26,7 +38,9 @@ export class UserResponse implements IUserResponse {
 export interface IUserResponse {
     id: string;
     username: string;
-    password: string;
+    name: string;
+    phone: string;
+    email: string;
     role: TRole;
     createdAt: Date;
 }

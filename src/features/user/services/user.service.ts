@@ -59,7 +59,9 @@ export class UserService {
             throw new NotFoundException('user-not-found');
         }
 
-        const isPasswordValid = await bcrypt.compare(password, user.password);
+        const userPassword = (await this.userRepository.getUserWithPassword(user.id)).password;
+
+        const isPasswordValid = await bcrypt.compare(password, userPassword);
         if (!isPasswordValid) {
             throw new UnauthorizedException('invalid-password');
         }
