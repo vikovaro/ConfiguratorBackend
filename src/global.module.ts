@@ -14,6 +14,7 @@ import { UserModule } from './features/user/user.module';
 import { UserRepository } from './features/user/repositories/user.repository';
 import { OrderModule } from './features/order/order.module';
 import { RolesGuard } from './guards/roles.guard';
+import { MetricsModule } from './metrics/metrics.module';
 
 @Global()
 @Module({
@@ -37,6 +38,7 @@ import { RolesGuard } from './guards/roles.guard';
         ConfiguratorModule,
         OrderModule,
         UserModule,
+        MetricsModule,
     ],
     providers: [
         UserRepository,
