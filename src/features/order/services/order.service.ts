@@ -5,12 +5,14 @@ import { IOrderResponse } from '../domain/dto/order.response';
 import { UpdateOrderRequest } from '../domain/dto/update.order.request';
 import { UserRepository } from '../../user/repositories/user.repository';
 import { ERole } from '../../user/domain/models/role.enum';
+import { MetricsService } from '../../../metrics/metrics.service';
 
 @Injectable()
 export class OrderService {
     constructor(
         private readonly orderRepository: OrderRepository,
         private readonly userRepository: UserRepository,
+        private readonly metricsService: MetricsService,
     ) {}
 
     async getOrder(id: number, userId: string) {
@@ -28,6 +30,7 @@ export class OrderService {
         createOrderRequest: CreateOrderRequest,
         userId: string,
     ): Promise<IOrderResponse> {
+        await this.metricsService.incOrdersCount();
         return await this.orderRepository.createOrder(createOrderRequest, userId);
     }
 

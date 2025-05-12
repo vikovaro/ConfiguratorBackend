@@ -1,5 +1,6 @@
 import {
     BadRequestException,
+    ForbiddenException,
     Injectable,
     NotFoundException,
     UnauthorizedException,
@@ -12,6 +13,7 @@ import { SignUpRequest } from '../domain/dto/sign-up.request';
 import { Role } from '@prisma/client';
 import { UpdateUserRequest } from '../domain/dto/update.request';
 import * as bcrypt from 'bcryptjs';
+import { MetricsService } from '../../../metrics/metrics.service';
 
 @Injectable()
 export class UserService {
@@ -20,6 +22,7 @@ export class UserService {
     constructor(
         private readonly userRepository: UserRepository,
         private readonly tokenService: TokenService,
+        private readonly metricsService: MetricsService,
     ) {}
 
     async getUserById(id: string): Promise<IUserResponse> {
@@ -45,6 +48,8 @@ export class UserService {
         const tokens = await this.tokenService.generateToken(user.id, Role.User);
 
         await this.userRepository.updateSession(user.id, tokens.accessToken, tokens.refreshToken);
+
+        await this.metricsService.incUsersCount();
 
         return {
             accessToken: tokens.accessToken,
@@ -94,10 +99,20 @@ export class UserService {
         };
     }
 
-    async update(updateRequest: UpdateUserRequest, userId: string): Promise<IUserResponse> {
-        const existingUser = await this.userRepository.getUserById(userId);
+    async updateUser(updateRequest: UpdateUserRequest, userId: string): Promise<IUserResponse> {
+        const existingUser = await this.userRepository.getUserById(updateRequest.userId);
         if (!existingUser) {
             throw new NotFoundException('user-not-found');
+        }
+
+        const requestOwner = await this.userRepository.getUserById(userId);
+
+        if (updateRequest.userId !== userId && requestOwner.role !== Role.Admin) {
+            throw new ForbiddenException('no-rights');
+        }
+
+        if (updateRequest.role && requestOwner.role !== Role.Admin) {
+            throw new ForbiddenException('no-rights-for-updating-user-role');
         }
 
         if (updateRequest.password) {

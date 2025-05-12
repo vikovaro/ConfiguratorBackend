@@ -1,1 +1,2 @@
-export const NEW_USER_METRIC = 'new_user';
+export const USERS_METRIC = 'users';
+export const ORDERS_METRIC = 'orders';

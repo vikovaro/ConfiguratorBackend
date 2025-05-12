@@ -6,10 +6,11 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TokenService } from '../user/services/token.service';
 import { UserRepository } from '../user/repositories/user.repository';
 import { OrderRepository } from './repositories/order.repository';
+import { MetricsService } from '../../metrics/metrics.service';
 
 @Module({
     controllers: [OrderController],
-    providers: [OrderService, TokenService, UserRepository, OrderRepository],
+    providers: [OrderService, TokenService, UserRepository, OrderRepository, MetricsService],
     imports: [
         JwtModule.registerAsync({
             imports: [ConfigModule],
