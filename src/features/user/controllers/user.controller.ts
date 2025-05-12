@@ -88,6 +88,6 @@ export class UserController {
         enableImplicitConversion: true,
     })
     async update(@Req() req: Request, @Body() updateRequest: UpdateUserRequest) {
-        return await this.userService.update(updateRequest, req['data'].userId);
+        return await this.userService.updateUser(updateRequest, req['data'].userId);
     }
 }

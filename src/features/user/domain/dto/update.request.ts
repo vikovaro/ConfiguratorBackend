@@ -1,7 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsOptional, IsString, MaxLength, MinLength } from 'class-validator';
+import { IsEnum, IsOptional, IsString, IsUUID, MaxLength, Min, MinLength } from 'class-validator';
+import { ERole, TRole } from '../models/role.enum';
 
 export class UpdateUserRequest implements IUpdateUserRequest {
+    @ApiProperty({ example: '4da06a83-abf8-4f00-9423-fc06acd0f21d' })
+    @IsUUID()
+    @Min(0)
+    userId: string;
+
     @ApiProperty({ example: 'username' })
     @IsString()
     @IsOptional()
@@ -36,12 +42,19 @@ export class UpdateUserRequest implements IUpdateUserRequest {
     @MinLength(8)
     @MaxLength(50)
     password?: string;
+
+    @ApiProperty({ enum: ERole })
+    @IsOptional()
+    @IsEnum(ERole)
+    role?: ERole;
 }
 
 export interface IUpdateUserRequest {
+    userId: string;
     login?: string;
     name?: string;
     phone?: string;
     email?: string;
     password?: string;
+    role?: TRole;
 }
