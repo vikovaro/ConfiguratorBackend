@@ -18,8 +18,8 @@
         "test:cov": "jest --coverage",
         "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
         "test:e2e": "jest --config ./test/jest-e2e.json",
-        "seed:run": "npx ts-node src/seed/seed-cli.ts seed:run",
-        "seed:clean": "npx ts-node src/seed/seed-cli.ts seed:clean"
+        "seed": "ts-node src/prisma/seed.ts",
+        "mock": "ts-node src/prisma/mock.ts"
     },
     "dependencies": {
         "@keyv/redis": "^4.4.0",

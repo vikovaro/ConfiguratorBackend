@@ -16,7 +16,7 @@ model cpu {
   wattage      Int
   frequency    Float
   price        Int
-  computers    configuration[]
+  computers    Configuration[]
 }
 
 model gpu {
@@ -27,7 +27,7 @@ model gpu {
   port         String
   wattage      Int
   price        Int
-  computers    configuration[]
+  computers    Configuration[]
 }
 
 model motherboard {
@@ -39,7 +39,7 @@ model motherboard {
   chipset         String
   port            String
   price           Int
-  computers       configuration[]
+  computers       Configuration[]
 }
 
 model psu {
@@ -48,7 +48,7 @@ model psu {
   name         String
   wattage      Int
   price        Int
-  computers    configuration[]
+  computers    Configuration[]
 }
 
 model ram {
@@ -57,10 +57,10 @@ model ram {
   name         String
   capacity     Int
   price        Int
-  computers    configuration[]
+  computers    Configuration[]
 }
 
-model configuration {
+model Configuration {
   id            Int         @id @default(autoincrement())
   cpuId         Int
   gpuId         Int
@@ -74,17 +74,53 @@ model configuration {
   motherboard   motherboard @relation(fields: [motherboardId], references: [id])
   psu           psu         @relation(fields: [psuId], references: [id])
   ram           ram         @relation(fields: [ramId], references: [id])
-  orderId       Int?
-  order         orders?     @relation(fields: [orderId], references: [id])
+  order         Order[]
 }
 
-model orders {
-  id             Int             @id @default(autoincrement())
-  orderNumber    String          @db.VarChar(5)
-  orderDate      DateTime
-  deliveryDate   DateTime?
-  clientName     String
-  clientPhone    String
-  carNumber      String?
-  configurations configuration[]
+model Order {
+  id              Int           @id @default(autoincrement())
+  orderDate       DateTime      @default(now())
+  deliveryDate    DateTime?
+  address         String
+  configuration   Configuration @relation(fields: [configurationId], references: [id])
+  configurationId Int
+  user            User          @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId          String        @db.Uuid
+  status          Status
+}
+
+model User {
+  id        String    @id @unique @default(uuid()) @db.Uuid
+  username  String    @unique
+  password  String
+  name      String
+  phone     String
+  email     String
+  createdAt DateTime  @default(now())
+  role      Role
+  updatedAt DateTime  @updatedAt
+  sessions  Session[]
+  Order     Order[]
+}
+
+model Session {
+  id           String   @id @unique @default(uuid()) @db.Uuid
+  accessToken  String   @unique
+  refreshToken String   @unique
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId       String   @unique @db.Uuid
+}
+
+enum Role {
+  Admin
+  User
+}
+
+enum Status {
+  Pending
+  Accepted
+  Canceled
+  Completed
 }
