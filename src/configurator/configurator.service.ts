@@ -1,9 +1,9 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { ConfiguratorRepository } from './configurator.repository';
-import { CreateConfigurationDto } from './dto/create-configuration.dto';
-import { IConfigurationResponse } from './dto/configuration.dto';
+import { CreateConfigurationDto } from './domain/dto/create-configuration.dto';
+import { IConfigurationResponse } from './domain/dto/configuration.dto';
 import { AppException } from './errors/app-exception';
-import { IGetConfigurationResponse } from './dto/get-configurations.response';
+import { IGetConfigurationResponse } from './domain/dto/get-configurations.response';
 
 @Injectable()
 export class ConfiguratorService {

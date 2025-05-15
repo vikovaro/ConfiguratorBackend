@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
-import { IConfigurationResponse } from './dto/configuration.dto';
-import { ICpuResponse } from './dto/cpu.dto';
-import { IGpuResponse } from './dto/gpu.dto';
-import { IMotherBoardResponse } from './dto/motherboard.dto';
-import { IPsuResponse } from './dto/psu.dto';
-import { IRamResponse } from './dto/ram.dto';
-import { IGetConfigurationResponse } from './dto/get-configurations.response';
+import { IConfigurationResponse } from './domain/dto/configuration.dto';
+import { ICpuResponse } from './domain/dto/cpu.dto';
+import { IGpuResponse } from './domain/dto/gpu.dto';
+import { IMotherBoardResponse } from './domain/dto/motherboard.dto';
+import { IPsuResponse } from './domain/dto/psu.dto';
+import { IRamResponse } from './domain/dto/ram.dto';
+import { IGetConfigurationResponse } from './domain/dto/get-configurations.response';
 
 @Injectable()
 export class ConfiguratorRepository {
