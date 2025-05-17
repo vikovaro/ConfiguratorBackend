@@ -17,17 +17,25 @@ export class ConfiguratorRepository {
         @Inject(CACHE_MANAGER) private cacheManager: Cache,
     ) {}
 
-    async getConfiguration(id: number): Promise<IConfigurationResponse> {
+    BASE_CONFIGURATOR_INCLUDE = {
+        cpu: true,
+        gpu: true,
+        motherboard: true,
+        psu: true,
+        ram: true,
+    };
+
+    async getConfigurationFromCache(id: number): Promise<IConfigurationResponse> {
+        return await this.cacheManager.get(`configuration-${id}`);
+    }
+
+    async getConfigurationFromDb(id: number): Promise<IConfigurationResponse> {
         return this.prisma.configuration.findUnique({
             where: {
                 id: id,
             },
             include: {
-                cpu: true,
-                gpu: true,
-                motherboard: true,
-                psu: true,
-                ram: true,
+                ...this.BASE_CONFIGURATOR_INCLUDE,
             },
         });
     }
@@ -35,7 +43,7 @@ export class ConfiguratorRepository {
     async saveConfiguration(
         configuration: IConfigurationResponse,
     ): Promise<IConfigurationResponse> {
-        return this.prisma.configuration.create({
+        const newConfiguration = await this.prisma.configuration.create({
             data: {
                 cpuId: configuration.cpu.id,
                 gpuId: configuration.gpu.id,
@@ -45,13 +53,17 @@ export class ConfiguratorRepository {
                 price: configuration.price,
             },
             include: {
-                cpu: true,
-                gpu: true,
-                motherboard: true,
-                psu: true,
-                ram: true,
+                ...this.BASE_CONFIGURATOR_INCLUDE,
             },
         });
+
+        await this.cacheManager.set(
+            `configuration-${newConfiguration.id}`,
+            newConfiguration,
+            60 * 60 * 1000,
+        );
+
+        return newConfiguration;
     }
 
     async getAllConfiguration(limit: number, offset: number): Promise<IGetConfigurationResponse> {
@@ -59,11 +71,7 @@ export class ConfiguratorRepository {
             skip: offset,
             take: limit,
             include: {
-                cpu: true,
-                gpu: true,
-                motherboard: true,
-                psu: true,
-                ram: true,
+                ...this.BASE_CONFIGURATOR_INCLUDE,
             },
         });
 

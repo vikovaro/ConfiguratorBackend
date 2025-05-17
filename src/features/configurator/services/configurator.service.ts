@@ -127,7 +127,11 @@ export class ConfiguratorService {
     }
 
     async getConfigurationById(id: number) {
-        const configuration = await this.configurationRepository.getConfiguration(id);
+        let configuration: IConfigurationResponse;
+        configuration = await this.configurationRepository.getConfigurationFromCache(id);
+        if (!configuration) {
+            configuration = await this.configurationRepository.getConfigurationFromDb(id);
+        }
 
         if (!configuration) {
             throw new NotFoundException();
