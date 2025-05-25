@@ -479,6 +479,18 @@ async function main() {
         ],
     });
 
+    await prisma.configuration.create({
+        data: {
+            id: 1,
+            cpuId: 3,
+            gpuId: 4,
+            motherboardId: 2,
+            psuId: 3,
+            ramId: 1,
+            price: 25000 + 60000 + 18000 + 15000 + 12000 + 8000 + 6000 + 4000,
+        }
+    });
+
     console.log('Seed data created successfully!');
 }
 
