@@ -6,6 +6,10 @@ export class GpuResponse implements IGpuResponse {
     @Expose()
     id: number;
 
+    @ApiProperty({ example: 'RTX 3060' })
+    @Expose()
+    name: string;
+
     @ApiProperty({ example: 1000 })
     @Expose()
     manufacturer: string;
@@ -29,6 +33,7 @@ export class GpuResponse implements IGpuResponse {
 
 export interface IGpuResponse {
     id: number;
+    name: string;
     manufacturer: string;
     price: number;
     wattage: number;

@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { ECpuVariants } from '../models/cpu.type.enum';
 import { EGpuVariants } from '../models/gpu.type.enum';
 
-export class CreateConfigurationDto {
+export class CreateConfigurationDto implements ICreateConfigurationDto {
     @ApiProperty({ type: Number, example: 1000 })
     @IsInt()
     @Min(1)
@@ -24,5 +24,12 @@ export class CreateConfigurationDto {
     @ApiProperty({ type: Number, example: 1000 })
     @IsOptional()
     @IsInt()
+    ram?: number;
+}
+
+export interface ICreateConfigurationDto {
+    price: number;
+    cpu?: string;
+    gpu?: string;
     ram?: number;
 }
